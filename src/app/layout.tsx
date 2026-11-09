@@ -39,8 +39,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex h-dvh flex-col">
         <Header />
         <main className="flex gap-2 flex-1 bg-background">
-          <Sidebar />
-          {children}
+          <div className="md:flex hidden">
+            <Sidebar />
+          </div>
+          <div className="px-2">{children}</div>
         </main>
       </body>
     </html>
