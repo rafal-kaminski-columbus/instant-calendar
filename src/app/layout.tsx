@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Nunito_Sans } from "next/font/google";
 import "./globals.css";
+import { Header } from "@/components/organisms/Header/Header";
 import { Sidebar } from "@/components/organisms/Sidebar/Sidebar";
 import { cn } from "@/lib/utils";
 
@@ -35,9 +36,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         nunitoSans.variable,
       )}
     >
-      <body className="min-h-full flex gap-4">
-        <Sidebar />
-        <main className="flex-1 bg-background">{children}</main>
+      <body className="flex h-dvh flex-col">
+        <Header />
+        <main className="flex gap-2 flex-1 bg-background">
+          <Sidebar />
+          {children}
+        </main>
       </body>
     </html>
   );

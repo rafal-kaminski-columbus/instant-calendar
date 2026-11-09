@@ -14,13 +14,13 @@ export function SidebarTab({ tab, isActive }: SidebarTabProps) {
       <Link
         href={tab.href}
         className={cn(
-          "flex items-center gap-2 p-2 rounded-full",
+          "flex items-center gap-2 px-2 py-1 rounded-full",
           isActive
             ? "bg-primary/30 text-primary font-bold"
-            : "bg-transparent hover:bg-sidebar-ring/50",
+            : "bg-transparent hover:bg-muted-foreground/10",
         )}
       >
-        <DynamicIcon name={tab.iconName} size={24} />
+        <DynamicIcon name={tab.iconName} size={20} />
         <h2 className="icon">{tab.name}</h2>
       </Link>
     </li>

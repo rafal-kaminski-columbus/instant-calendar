@@ -5,3 +5,9 @@ export interface Tab {
   href: string;
   iconName: IconName;
 }
+
+export interface Label {
+  id: string;
+  name: string;
+  color: string;
+}
