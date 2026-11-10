@@ -38,7 +38,7 @@ export function Sidebar() {
   const activeRoute = tabs.find((tab) => tab.href === pathName);
 
   return (
-    <aside className="sm:w-64 flex flex-col justify-between h-full sm:p-4 sm:pt-2 p-3 pt-0">
+    <aside className="sm:w-60 flex flex-col justify-between h-full sm:p-4 sm:pt-2 p-3 pt-0">
       <article className="flex flex-col gap-8">
         <Button className="flex gap-2 w-full" size="lg">
           <PencilLine />

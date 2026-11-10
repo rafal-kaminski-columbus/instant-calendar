@@ -38,11 +38,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex h-dvh flex-col">
         <Header />
-        <main className="flex gap-2 flex-1 bg-background">
+        <main className="flex gap-2 flex-1 bg-background w-full">
           <div className="md:flex hidden">
             <Sidebar />
           </div>
-          <div className="px-2">{children}</div>
+          <div className="pl-4 w-full">{children}</div>
         </main>
       </body>
     </html>

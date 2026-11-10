@@ -1,3 +1,5 @@
+import { TopicTable } from "@/features/topic/components/TopicTable/TopicTable";
+
 export default function Home() {
-  return <h1>Welcome!</h1>;
+  return <TopicTable label="Inbox" />;
 }
