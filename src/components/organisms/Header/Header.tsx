@@ -21,7 +21,9 @@ export function Header() {
           </SheetTrigger>
           <SheetContent side="left" className="max-w-64!">
             <SheetHeader>Columbus the great Mail</SheetHeader>
-            <Sidebar />
+            <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+              <Sidebar />
+            </div>
           </SheetContent>
         </Sheet>
       </div>
