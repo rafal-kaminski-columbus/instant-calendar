@@ -4,34 +4,18 @@ import { usePathname } from "next/navigation";
 import { LabelList } from "@/components/molecules/LabelList";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { MAILBOX_KEYS, MAILBOXES } from "@/lib/mailbox";
 import type { Tab } from "@/lib/types";
 import { SidebarTab } from "./SidebarTab";
 
 const email = process.env.NEXT_PUBLIC_USER_EMAIL;
 
 export function Sidebar() {
-  const tabs: Tab[] = [
-    {
-      name: "Inbox",
-      href: "/",
-      iconName: "inbox",
-    },
-    {
-      name: "Starred",
-      href: "/starred",
-      iconName: "star",
-    },
-    {
-      name: "Sent",
-      href: "/sent",
-      iconName: "send",
-    },
-    {
-      name: "Archive",
-      href: "/archived",
-      iconName: "archive",
-    },
-  ];
+  const tabs: Tab[] = MAILBOX_KEYS.map((mailbox) => ({
+    name: MAILBOXES[mailbox].label,
+    href: `/${mailbox}`,
+    iconName: MAILBOXES[mailbox].iconName,
+  }));
 
   const pathName = usePathname();
 

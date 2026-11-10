@@ -1,8 +1,5 @@
-import { TopicTable } from "@/features/topic/components/TopicTable";
-import { mockTopics } from "@/features/topic/mock-topics";
+import { redirect } from "next/navigation";
 
-export default function InboxPage() {
-  const topics = mockTopics.filter((topic) => !topic.archived);
-
-  return <TopicTable label="Inbox" topics={topics} />;
+export default function Home() {
+  redirect("inbox");
 }
