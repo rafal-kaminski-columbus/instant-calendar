@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Nunito_Sans } from "next/font/google";
 import "./globals.css";
+import { Header } from "@/components/organisms/Header/Header";
+import { Sidebar } from "@/components/organisms/Sidebar/Sidebar";
 import { cn } from "@/lib/utils";
-import { Button } from "@base-ui/react";
 
 const nunitoSans = Nunito_Sans({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      dir="ltr"
       className={cn(
         "h-full",
         "antialiased",
@@ -34,7 +36,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         nunitoSans.variable,
       )}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="flex h-dvh flex-col">
+        <Header />
+        <main className="flex gap-2 flex-1 bg-background">
+          <div className="md:flex hidden">
+            <Sidebar />
+          </div>
+          <div className="px-2">{children}</div>
+        </main>
+      </body>
     </html>
   );
 }
