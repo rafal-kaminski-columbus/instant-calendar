@@ -35,7 +35,7 @@ export function Topic({
   const date = getTopicDate(lastMessageAt);
 
   return (
-    <li className="relative flex h-20 justify-between border-b hover:bg-muted px-4 pt-3 pb-1 font-medium whitespace-nowrap last:border-0 sm:px-5 group">
+    <li className="relative flex h-20 justify-between border-b hover:bg-muted px-4 py-3  font-medium whitespace-nowrap last:border-0 sm:px-5 group">
       <Link
         href={`/topic/${id}`}
         aria-label={subject}
