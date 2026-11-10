@@ -42,7 +42,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <div className="md:flex hidden">
             <Sidebar />
           </div>
-          <div className="pl-4 w-full">{children}</div>
+          <div className="md:pl-4 w-full">{children}</div>
         </main>
       </body>
     </html>
