@@ -14,7 +14,7 @@ export function Sidebar() {
   const tabs: Tab[] = MAILBOX_KEYS.map((mailbox) => ({
     name: MAILBOXES[mailbox].label,
     href: `/${mailbox}`,
-    iconName: MAILBOXES[mailbox].iconName,
+    icon: MAILBOXES[mailbox].icon,
   }));
 
   const pathName = usePathname();

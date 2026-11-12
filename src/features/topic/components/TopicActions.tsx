@@ -1,7 +1,7 @@
 "use client";
 import { cn } from "cn";
-import { Archive, ArchiveRestore, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { TopicArchiveButton } from "@/features/topic/components/TopicArchiveButton";
+import { TopicStarButton } from "@/features/topic/components/TopicStarButton";
 
 interface TopicActionsProps {
   id: string;
@@ -12,27 +12,19 @@ interface TopicActionsProps {
 export function TopicActions({ id, starred, archived }: TopicActionsProps) {
   return (
     <>
-      <Button
-        type="button"
-        aria-label={archived ? "Unarchive" : "Archive"}
+      <TopicArchiveButton
+        archived={archived}
         size="icon"
-        variant="ghost"
         className="invisible transition-none group-hover:visible"
-      >
-        {archived ? <ArchiveRestore /> : <Archive />}
-      </Button>
-      <Button
-        type="button"
-        aria-label={starred ? "Deselect Star from mail" : "Star mail"}
+      />
+      <TopicStarButton
+        starred={starred}
         size="icon"
-        variant="ghost"
         className={cn(
           "transition-none",
           !starred && "invisible group-hover:visible",
         )}
-      >
-        <Star className={cn(starred && "fill-primary text-primary")} />
-      </Button>
+      />
     </>
   );
 }

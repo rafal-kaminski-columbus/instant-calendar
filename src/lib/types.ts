@@ -1,4 +1,4 @@
-import type { IconName } from "lucide-react/dynamic";
+import type { LucideIcon } from "lucide-react";
 
 export interface User {
   id: string;
@@ -11,7 +11,7 @@ export interface User {
 export interface Tab {
   name: string;
   href: string;
-  iconName: IconName;
+  icon: LucideIcon;
 }
 
 export interface Label {

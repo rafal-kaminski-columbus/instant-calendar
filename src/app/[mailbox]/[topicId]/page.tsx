@@ -1,9 +1,11 @@
-import { Archive, ArrowLeft, Star } from "lucide-react";
 import { notFound } from "next/navigation";
 import { ReplyForm } from "@/components/molecules/ReplyForm";
 import { Separator } from "@/components/ui/separator";
+import { TopicArchiveButton } from "@/features/topic/components/TopicArchiveButton";
+import { TopicBackButton } from "@/features/topic/components/TopicBackButton";
 import { TopicMessageHeader } from "@/features/topic/components/TopicMessageHeader";
 import { TopicMessages } from "@/features/topic/components/TopicMessages";
+import { TopicStarButton } from "@/features/topic/components/TopicStarButton";
 import { mockTopics } from "@/features/topic/mock-topics";
 
 interface TopicDetailPageProps extends PageProps<"/[mailbox]/[topicId]"> {}
@@ -11,7 +13,7 @@ interface TopicDetailPageProps extends PageProps<"/[mailbox]/[topicId]"> {}
 export default async function TopicDetailPage({
   params,
 }: TopicDetailPageProps) {
-  const { topicId } = await params;
+  const { mailbox, topicId } = await params;
   const topic = mockTopics.find((topic) => topic.id === topicId);
 
   if (!topic) {
@@ -24,11 +26,11 @@ export default async function TopicDetailPage({
   return (
     <article className="flex h-full min-h-0 flex-col md:border-l md:border-t md:rounded-l-2xl">
       <div className="flex h-10 items-center justify-between border-b px-4 font-bold whitespace-nowrap text-foreground transition-colors hover:bg-muted/50 sm:px-5">
-        <div className="flex gap-2">
-          <ArrowLeft />
+        <div className="flex gap-0.5">
+          <TopicBackButton backHref={mailbox} />
           <Separator orientation="vertical" />
-          <Archive />
-          <Star />
+          <TopicArchiveButton archived={topic.archived} />
+          <TopicStarButton starred={topic.starred} />
         </div>
         <p className="text-muted-foreground text-xs">
           {topic.messages.length} messages

@@ -1,11 +1,11 @@
-import type { IconName } from "lucide-react/dynamic";
+import { Archive, Inbox, type LucideIcon, Send, Star } from "lucide-react";
 
 export const MAILBOXES = {
-  inbox: { label: "Inbox", iconName: "inbox" },
-  starred: { label: "Starred", iconName: "star" },
-  sent: { label: "Sent", iconName: "send" },
-  archive: { label: "Archive", iconName: "archive" },
-} as const satisfies Record<string, { label: string; iconName: IconName }>;
+  inbox: { label: "Inbox", icon: Inbox },
+  starred: { label: "Starred", icon: Star },
+  sent: { label: "Sent", icon: Send },
+  archive: { label: "Archive", icon: Archive },
+} as const satisfies Record<string, { label: string; icon: LucideIcon }>;
 
 export type Mailbox = keyof typeof MAILBOXES;
 
