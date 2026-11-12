@@ -1,6 +1,4 @@
-import { getMessages } from "@/drizzle/schema/query";
-import { TopicTable } from "@/features/topic/components/TopicTable";
-import { mockTopics } from "@/features/topic/mock-topics";
+import { redirect } from "next/navigation";
 
 export default function Home() {
   redirect("/inbox");

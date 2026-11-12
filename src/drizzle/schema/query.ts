@@ -1,5 +1,4 @@
-import { eq } from "drizzle-orm/sql/expressions/index";
-import { sql } from "drizzle-orm/sql/sql";
+import { and, asc, count, eq, inArray, max } from "drizzle-orm";
 import { db } from "@/drizzle";
 import {
   labels,
@@ -7,46 +6,75 @@ import {
   messages,
   topicLabels,
   topicStates,
+  topics,
+  users,
 } from "@/drizzle/schema";
 
-export async function getMessages(userId: number) {
-  // wszytskie labele usera
-  const label_ids = await db
-    .select()
-    .from(labels)
-    .where(eq(labels.userId, userId));
-
-  console.log("label_ids", label_ids);
-
-  // wszytskie topic state usera
-  const topic_states = await db
-    .select()
+export async function getUserTopics(userId: number) {
+  return db
+    .select({
+      id: topics.id,
+      subject: topics.subject,
+      seen: topicStates.seen,
+      archivized: topicStates.archivized,
+    })
     .from(topicStates)
+    .innerJoin(topics, eq(topics.id, topicStates.topicId))
     .where(eq(topicStates.userId, userId));
+}
 
-  const messages_for_topic = await db
+export async function getMessageStatsByTopicIds(topicIds: number[]) {
+  return db
     .select({
       topicId: messages.topicId,
-      count: sql<number>`cast(count(${messages.id}) as int)`,
+      messageCount: count(),
+      lastMessageAt: max(messages.sentAt),
     })
     .from(messages)
+    .where(inArray(messages.topicId, topicIds))
     .groupBy(messages.topicId);
+}
 
-  console.log("messages_for_topic", messages_for_topic);
+export async function getSendersByTopicIds(topicIds: number[]) {
+  return db
+    .selectDistinct({
+      topicId: messages.topicId,
+      userId: messages.senderId,
+    })
+    .from(messages)
+    .where(inArray(messages.topicId, topicIds));
+}
 
-  //console.log("topic_states", topic_states);
+export async function getRecipientsByTopicIds(topicIds: number[]) {
+  return db
+    .selectDistinct({
+      topicId: messages.topicId,
+      userId: messageRecipients.recipientId,
+    })
+    .from(messageRecipients)
+    .innerJoin(messages, eq(messages.id, messageRecipients.messageId))
+    .where(inArray(messages.topicId, topicIds));
+}
 
-  // przejscie po wszystkich topicach usera
-  // wylistiowanie labeli do topica
-  // const labels_for_topic = await db
-  //   .select()
-  //   .from(topicLabels)
-  //   .where(eq(topicLabels.topicId, topic_state.topicId));
-  // //join z message recipients
-  // const messages_with_recipients = await db
-  //   .select()
-  //   .from(messages)
-  //   .leftJoin(messageRecipients, eq(messages.id, messageRecipients.messageId))
-  //   .where(eq(messages.topicId, topic_state.topicId));
-  // console.log("messages_with_recipients", messages_with_recipients.length);
+export async function getUsersByIds(userIds: number[]) {
+  return db.select().from(users).where(inArray(users.id, userIds));
+}
+
+export async function getUserLabelsByTopicIds(
+  userId: number,
+  topicIds: number[],
+) {
+  return db
+    .select({
+      topicId: topicLabels.topicId,
+      id: labels.id,
+      name: labels.name,
+      color: labels.color,
+    })
+    .from(topicLabels)
+    .innerJoin(labels, eq(labels.id, topicLabels.labelId))
+    .where(
+      and(eq(labels.userId, userId), inArray(topicLabels.topicId, topicIds)),
+    )
+    .orderBy(asc(labels.name));
 }
