@@ -1,8 +1,8 @@
 import { MessageAvatar } from "@/components/molecules/MessageAvatar";
 import { getTopicFullDate } from "@/lib/pure";
-import type { Message } from "@/lib/types";
+import type { MessageMeta } from "@/lib/types";
 
-interface TopicMessageHeaderProps extends Message {}
+interface TopicMessageHeaderProps extends MessageMeta {}
 
 export function TopicMessageHeader({
   creator,

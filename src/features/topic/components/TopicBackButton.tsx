@@ -4,13 +4,13 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button-variants";
 
 interface TopicBackButtonProps {
-  backHref: string;
+  href: string;
 }
 
-export function TopicBackButton({ backHref }: TopicBackButtonProps) {
+export function TopicBackButton({ href }: TopicBackButtonProps) {
   return (
     <Link
-      href={`/${backHref}`}
+      href={href}
       aria-label="Go back"
       className={cn(
         buttonVariants({ variant: "ghost", size: "icon-lg" }),

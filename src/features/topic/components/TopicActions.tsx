@@ -13,11 +13,13 @@ export function TopicActions({ id, starred, archived }: TopicActionsProps) {
   return (
     <>
       <TopicArchiveButton
+        topicId={id}
         archived={archived}
         size="icon"
         className="invisible transition-none group-hover:visible"
       />
       <TopicStarButton
+        topicId={id}
         starred={starred}
         size="icon"
         className={cn(

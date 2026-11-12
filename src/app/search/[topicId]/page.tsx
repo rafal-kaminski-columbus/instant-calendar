@@ -1,9 +1,17 @@
+import { TopicDetail } from "@/features/topic/components/TopicDetail";
+
 interface TopicDetailPageProps extends PageProps<"/search/[topicId]"> {}
 
 export default async function TopicDetailPage({
   params,
+  searchParams,
 }: TopicDetailPageProps) {
-  const { topicId } = await params;
+  const [{ topicId }, { query }] = await Promise.all([params, searchParams]);
 
-  return <h1>Page for topic with id: {topicId}</h1>;
+  const search = typeof query === "string" ? query.trim() : "";
+  const backHref = search
+    ? `/search?query=${encodeURIComponent(search)}`
+    : "/search";
+
+  return <TopicDetail topicId={topicId} backHref={backHref} />;
 }

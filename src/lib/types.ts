@@ -33,10 +33,24 @@ export interface Topic {
   archived: boolean;
 }
 
-export interface Message {
+export interface MessageMeta {
   id: string;
   creator: User;
   participants: User[];
-  subject: string;
   createdAt: string;
+}
+
+export interface Message extends MessageMeta {
+  subject: string;
+}
+
+export interface TopicSummary {
+  id: string;
+  subject: string;
+  label: Label | null;
+  read: boolean;
+  starred: boolean;
+  archived: boolean;
+  messageCount: number;
+  latest: MessageMeta;
 }

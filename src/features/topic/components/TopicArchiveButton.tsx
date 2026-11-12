@@ -6,12 +6,14 @@ import { Button } from "@/components/ui/button";
 import type { ButtonSize } from "@/components/ui/button-variants";
 
 interface TopicArchiveButtonProps {
+  topicId: string;
   archived: boolean;
   size?: ButtonSize;
   className?: string;
 }
 
 export function TopicArchiveButton({
+  topicId,
   archived,
   size = "icon-lg",
   className,
@@ -21,6 +23,7 @@ export function TopicArchiveButton({
   return (
     <Button
       type="button"
+      data-topic-id={topicId}
       aria-label={archived ? "Unarchive" : "Archive"}
       variant="ghost"
       size={size}
