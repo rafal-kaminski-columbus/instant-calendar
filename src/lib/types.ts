@@ -35,7 +35,7 @@ export interface Topic {
 
 export interface Message {
   id: string;
-  sender: User;
+  creator: User;
   participants: User[];
   subject: string;
   createdAt: string;

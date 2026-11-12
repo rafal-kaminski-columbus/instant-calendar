@@ -19,7 +19,7 @@ export function Sidebar() {
 
   const pathName = usePathname();
 
-  const activeRoute = tabs.find((tab) => tab.href === pathName);
+  const activeRoute = tabs.find((tab) => pathName.includes(tab.href));
 
   return (
     <aside className="sm:w-60 flex flex-col justify-between h-full sm:p-4 sm:pt-2 p-3 pt-0">

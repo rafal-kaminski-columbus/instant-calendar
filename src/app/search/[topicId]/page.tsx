@@ -1,4 +1,4 @@
-interface TopicDetailPageProps extends PageProps<"/topic/[topicId]"> {}
+interface TopicDetailPageProps extends PageProps<"/search/[topicId]"> {}
 
 export default async function TopicDetailPage({
   params,

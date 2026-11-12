@@ -8,7 +8,11 @@ interface MailBoxProps extends PageProps<"/[mailbox]"> {}
 
 export default async function MailboxPage({ params }: MailBoxProps) {
   const { mailbox } = await params;
-  if (!isMailbox(mailbox)) notFound();
+
+  if (!isMailbox(mailbox)) {
+    notFound();
+  }
+
   let topics: Topic[] = [];
 
   switch (mailbox) {
@@ -28,5 +32,11 @@ export default async function MailboxPage({ params }: MailBoxProps) {
       break;
   }
 
-  return <TopicList label={MAILBOXES[mailbox].label} topics={topics} />;
+  return (
+    <TopicList
+      source={mailbox}
+      label={MAILBOXES[mailbox].label}
+      topics={topics}
+    />
+  );
 }
