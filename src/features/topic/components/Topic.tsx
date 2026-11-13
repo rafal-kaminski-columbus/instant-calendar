@@ -2,35 +2,35 @@ import Link from "next/link";
 import { MessageAvatar } from "@/components/molecules/MessageAvatar";
 import { currentUser } from "@/lib/current-user";
 import { getTopicShortDate } from "@/lib/pure";
-import type { Topic as TopicType } from "@/lib/types";
+import type { TopicMeta } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { TopicActions } from "./TopicActions";
 
-interface TopicProps extends TopicType {
+interface TopicProps extends TopicMeta {
   source: string;
 }
 
 export function Topic({
   id,
   lastMessageAt,
-  messages,
+  messageCount,
   subject,
   participants,
-  creator,
+  lastParticipant,
   label,
   starred,
   archived,
+  read,
   source,
 }: TopicProps) {
-  const others = participants.filter(
-    (participant) => participant.id !== currentUser.id,
+  const participantNamesWithoutCurrentUser = participants.filter(
+    (participant) => participant !== currentUser.firstName,
   );
-  const participantsNames = others.map((participant) => participant.firstName);
 
-  if (others.length !== participants.length) {
-    participantsNames.push("me");
+  if (participantNamesWithoutCurrentUser.length !== participants.length) {
+    participantNamesWithoutCurrentUser.push("me");
   }
 
-  const messagesLength = messages.length;
   const date = getTopicShortDate(lastMessageAt);
 
   return (
@@ -41,13 +41,15 @@ export function Topic({
         className="absolute inset-0"
       />
       <div className="flex gap-2 items-center">
-        <MessageAvatar user={creator} />
+        <MessageAvatar user={lastParticipant} />
         <div>
           <div className="flex gap-1">
-            <p>{participantsNames.join(", ")}</p>
-            <p className="text-muted-foreground">{messagesLength}</p>
+            <p className={cn(!read && "font-bold")}>
+              {participantNamesWithoutCurrentUser.join(", ")}
+            </p>
+            <p className="text-muted-foreground">{messageCount}</p>
           </div>
-          <p>{subject}</p>
+          <p className={cn(!read && "font-bold")}>{subject}</p>
           {label && (
             <div className="flex gap-1 items-center font-light">
               <div
@@ -60,9 +62,16 @@ export function Topic({
         </div>
       </div>
       <div className="flex flex-col justify-between">
-        <p className="text-muted-foreground self-end">{date}</p>
+        <p
+          className={cn(
+            "text-muted-foreground self-end",
+            !read && "font-bold text-black",
+          )}
+        >
+          {date}
+        </p>
         <div className="relative z-20 flex">
-          <TopicActions id={id} starred={starred} archived={archived} />
+          <TopicActions id={String(id)} starred={starred} archived={archived} />
         </div>
       </div>
     </li>

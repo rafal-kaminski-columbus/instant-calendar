@@ -1,12 +1,13 @@
-import type { TopicSummary } from "@/lib/types";
+import type { MessageMeta, TopicSummary } from "@/lib/types";
 import { TopicMessageHeader } from "./TopicMessageHeader";
 
 interface TopicHeaderProps {
   summary: TopicSummary;
+  latest: MessageMeta;
 }
 
-export function TopicHeader({ summary }: TopicHeaderProps) {
-  const { subject, label, latest } = summary;
+export function TopicHeader({ summary, latest }: TopicHeaderProps) {
+  const { subject, label } = summary;
 
   return (
     <header className="flex flex-col gap-6">
