@@ -10,16 +10,16 @@ import { SidebarTab } from "./SidebarTab";
 
 const email = process.env.NEXT_PUBLIC_USER_EMAIL;
 
-export function Sidebar() {
-  const tabs: Tab[] = MAILBOX_KEYS.map((mailbox) => ({
-    name: MAILBOXES[mailbox].label,
-    href: `/${mailbox}`,
-    icon: MAILBOXES[mailbox].icon,
-  }));
+const tabs: Tab[] = MAILBOX_KEYS.map((mailbox) => ({
+  name: MAILBOXES[mailbox].label,
+  href: `/${mailbox}`,
+  icon: MAILBOXES[mailbox].icon,
+}));
 
+export function Sidebar() {
   const pathName = usePathname();
 
-  const activeRoute = tabs.find((tab) => pathName.includes(tab.href));
+  const activeHref = tabs.find((tab) => pathName.includes(tab.href))?.href;
 
   return (
     <aside className="sm:w-60 flex flex-col justify-between h-full sm:p-4 sm:pt-2 p-3 pt-0">
@@ -31,7 +31,7 @@ export function Sidebar() {
         <nav>
           <ul className="flex flex-col gap-1">
             {tabs.map((tab) => {
-              const isActive = activeRoute?.href === tab.href;
+              const isActive = activeHref === tab.href;
               return (
                 <SidebarTab key={tab.href} tab={tab} isActive={isActive} />
               );
