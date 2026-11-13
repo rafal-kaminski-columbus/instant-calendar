@@ -16,7 +16,8 @@ import {
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { currentUser } from "../mock-topics";
+import { currentUser } from "@/lib/current-user";
+import { TopicRecipientsField } from "./TopicRecipientsField";
 
 export function TopicComposeDrawer() {
   const fullName = `${currentUser.firstName} ${currentUser.lastName}`;
@@ -58,6 +59,7 @@ export function TopicComposeDrawer() {
             <h2 className="text-muted-foreground">
               From: {fullName} · {currentUser.email}
             </h2>
+            <TopicRecipientsField />
             <Field>
               <FieldLabel htmlFor="input-field-subject">Subject</FieldLabel>
               <Input
