@@ -111,12 +111,9 @@ export async function getUserLabels(userId: number): Promise<Label[]> {
   }));
 }
 
-export async function getMessagesInTopic(
-  userId: number,
-  topicId: number,
-): Promise<Message[]> {
+export async function getMessagesInTopic(topicId: number): Promise<Message[]> {
   const topicMessages = await db.query.messages.findMany({
-    where: { topicId, topic: { topicStates: { userId } } },
+    where: { topicId },
     columns: { id: true, content: true, sentAt: true },
     with: {
       user: { columns: userColumns },
