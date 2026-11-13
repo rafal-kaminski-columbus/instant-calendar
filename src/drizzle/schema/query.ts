@@ -176,12 +176,17 @@ export async function getTopicSummary(
   };
 }
 
+type TopicState = typeof topicStates.$inferSelect;
+
+type TopicStateFlagColumn = {
+  [K in keyof TopicState]: TopicState[K] extends boolean ? K : never;
+}[keyof TopicState];
+
 const topicStateFlags = {
   read: "seen",
   starred: "starred",
   archived: "archivized",
-} as const;
-
+} as const satisfies Record<string, TopicStateFlagColumn>;
 export async function toggleTopicState(
   userId: number,
   topicId: number,
