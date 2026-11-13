@@ -1,4 +1,4 @@
-import type { IconName } from "lucide-react/dynamic";
+import type { LucideIcon } from "lucide-react";
 
 export interface User {
   id: string;
@@ -11,7 +11,7 @@ export interface User {
 export interface Tab {
   name: string;
   href: string;
-  iconName: IconName;
+  icon: LucideIcon;
 }
 
 export interface Label {
@@ -33,10 +33,24 @@ export interface Topic {
   archived: boolean;
 }
 
-export interface Message {
+export interface MessageMeta {
   id: string;
-  sender: User;
+  creator: User;
   participants: User[];
-  subject: string;
   createdAt: string;
+}
+
+export interface Message extends MessageMeta {
+  subject: string;
+}
+
+export interface TopicSummary {
+  id: string;
+  subject: string;
+  label: Label | null;
+  read: boolean;
+  starred: boolean;
+  archived: boolean;
+  messageCount: number;
+  latest: MessageMeta;
 }

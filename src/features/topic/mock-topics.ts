@@ -102,7 +102,7 @@ const offsitePeople: User[] = [tomas, currentUser, finn, hana];
 const escalationMessages: Message[] = [
   {
     id: "msg-escalation-1",
-    sender: mara,
+    creator: mara,
     participants: escalationPeople,
     subject:
       "Two testers hit this today: open a thread from the list, and the pane still shows whatever was selected before. Second click fixes it.",
@@ -110,14 +110,14 @@ const escalationMessages: Message[] = [
   },
   {
     id: "msg-escalation-2",
-    sender: finn,
+    creator: finn,
     participants: escalationPeople,
     subject: "Reproduced on my side. Only when the list was scrolled first.",
     createdAt: "2026-10-08T08:41:00.000Z",
   },
   {
     id: "msg-escalation-3",
-    sender: currentUser,
+    creator: currentUser,
     participants: escalationPeople,
     subject:
       "That smells like the reading pane reading a stale id rather than a render ordering problem.",
@@ -125,7 +125,7 @@ const escalationMessages: Message[] = [
   },
   {
     id: "msg-escalation-4",
-    sender: mara,
+    creator: mara,
     participants: escalationPeople,
     subject:
       "Agreed. The id in the URL is correct, so the pane is not deriving from it.",
@@ -133,49 +133,49 @@ const escalationMessages: Message[] = [
   },
   {
     id: "msg-escalation-5",
-    sender: finn,
+    creator: finn,
     participants: escalationPeople,
     subject: "Confirmed — it keeps a copy in local state and never resyncs.",
     createdAt: "2026-10-08T11:47:00.000Z",
   },
   {
     id: "msg-escalation-6",
-    sender: currentUser,
+    creator: currentUser,
     participants: escalationPeople,
     subject: "Then the fix is to drop that copy and read the id directly.",
     createdAt: "2026-10-08T13:30:00.000Z",
   },
   {
     id: "msg-escalation-7",
-    sender: mara,
+    creator: mara,
     participants: escalationPeople,
     subject: "Support bumped it to escalation, three more reports this hour.",
     createdAt: "2026-10-08T15:58:00.000Z",
   },
   {
     id: "msg-escalation-8",
-    sender: finn,
+    creator: finn,
     participants: escalationPeople,
     subject: "Patch is up. Still need someone to check the keyboard path.",
     createdAt: "2026-10-09T07:14:00.000Z",
   },
   {
     id: "msg-escalation-9",
-    sender: currentUser,
+    creator: currentUser,
     participants: escalationPeople,
     subject: "Arrow keys look right now. Shift-select across pages still lags.",
     createdAt: "2026-10-09T09:36:00.000Z",
   },
   {
     id: "msg-escalation-10",
-    sender: mara,
+    creator: mara,
     participants: escalationPeople,
     subject: "Let's ship the stale-id fix and track the lag separately.",
     createdAt: "2026-10-09T12:20:00.000Z",
   },
   {
     id: "msg-escalation-11",
-    sender: finn,
+    creator: finn,
     participants: escalationPeople,
     subject:
       "freelancer.chandansoni@gmail.com is picking up the follow-up ticket — adding him to the next thread.",
@@ -192,7 +192,7 @@ export const mockTopics: Topic[] = [
     messages: [
       {
         id: "msg-standup-1",
-        sender: priya,
+        creator: priya,
         participants: standupPeople,
         subject:
           "Posting these early since I'm out Thursday. Blockers are listed at the bottom.",
@@ -200,7 +200,7 @@ export const mockTopics: Topic[] = [
       },
       {
         id: "msg-standup-2",
-        sender: tomas,
+        creator: tomas,
         participants: standupPeople,
         subject:
           "Nothing blocking on my end, the migration finished overnight.",
@@ -221,7 +221,7 @@ export const mockTopics: Topic[] = [
     messages: [
       {
         id: "msg-invoice-1",
-        sender: nkechi,
+        creator: nkechi,
         participants: invoicePeople,
         subject:
           "Accounts payable has it flagged. Can you confirm the PO number before Friday?",
@@ -242,7 +242,7 @@ export const mockTopics: Topic[] = [
     messages: [
       {
         id: "msg-design-1",
-        sender: hana,
+        creator: hana,
         participants: designPeople,
         subject:
           "Screenshots attached in the ticket. The subject line collides with the date column.",
@@ -250,7 +250,7 @@ export const mockTopics: Topic[] = [
       },
       {
         id: "msg-design-2",
-        sender: mara,
+        creator: mara,
         participants: designPeople,
         subject:
           "Only below 1366px? I can't reproduce on the larger breakpoint.",
@@ -258,7 +258,7 @@ export const mockTopics: Topic[] = [
       },
       {
         id: "msg-design-3",
-        sender: currentUser,
+        creator: currentUser,
         participants: designPeople,
         subject:
           "It's the fixed date column. Making it shrink-to-fit solves it.",
@@ -279,7 +279,7 @@ export const mockTopics: Topic[] = [
     messages: [
       {
         id: "msg-dentist-1",
-        sender: nkechi,
+        creator: nkechi,
         participants: dentistPeople,
         subject:
           "The 11th no longer works — we moved you to the 18th at 14:30. Reply to confirm.",
@@ -300,14 +300,14 @@ export const mockTopics: Topic[] = [
     messages: [
       {
         id: "msg-lisbon-1",
-        sender: currentUser,
+        creator: currentUser,
         participants: lisbonPeople,
         subject: "Cheapest is the 06:40 but it means a night at the airport.",
         createdAt: "2026-10-27T20:15:00.000Z",
       },
       {
         id: "msg-lisbon-2",
-        sender: tomas,
+        creator: tomas,
         participants: lisbonPeople,
         subject: "Take the midday one, I'll cover the difference.",
         createdAt: "2026-10-28T19:01:00.000Z",
@@ -327,7 +327,7 @@ export const mockTopics: Topic[] = [
     messages: [
       {
         id: "msg-sunday-1",
-        sender: hana,
+        creator: hana,
         participants: sundayPeople,
         subject:
           "One o'clock, and she's asking whether you're bringing dessert.",
@@ -335,7 +335,7 @@ export const mockTopics: Topic[] = [
       },
       {
         id: "msg-sunday-2",
-        sender: currentUser,
+        creator: currentUser,
         participants: sundayPeople,
         subject:
           "I'll bring the almond cake. Tell her not to make a second one.",
@@ -368,7 +368,7 @@ export const mockTopics: Topic[] = [
     messages: [
       {
         id: "msg-gym-1",
-        sender: priya,
+        creator: priya,
         participants: gymPeople,
         subject:
           "You're renewed through next October. Receipt is in the portal.",
@@ -389,7 +389,7 @@ export const mockTopics: Topic[] = [
     messages: [
       {
         id: "msg-offsite-1",
-        sender: tomas,
+        creator: tomas,
         participants: offsitePeople,
         subject:
           "Recap below. Owners are in bold, dates are soft except the audit.",
@@ -397,7 +397,7 @@ export const mockTopics: Topic[] = [
       },
       {
         id: "msg-offsite-2",
-        sender: finn,
+        creator: finn,
         participants: offsitePeople,
         subject:
           "Taking the accessibility audit. Will have findings by the 30th.",

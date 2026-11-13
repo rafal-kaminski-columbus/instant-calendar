@@ -1,4 +1,5 @@
 import { Menu } from "lucide-react";
+import { Suspense } from "react";
 import { SearchBar } from "@/components/molecules/SearchBar";
 import {
   Sheet,
@@ -27,7 +28,9 @@ export function Header() {
           </SheetContent>
         </Sheet>
       </div>
-      <SearchBar />
+      <Suspense>
+        <SearchBar />
+      </Suspense>
     </header>
   );
 }

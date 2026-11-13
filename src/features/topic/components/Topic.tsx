@@ -1,11 +1,13 @@
 import Link from "next/link";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { getTopicDate } from "@/lib/pure";
+import { MessageAvatar } from "@/components/molecules/MessageAvatar";
+import { getTopicShortDate } from "@/lib/pure";
 import type { Topic as TopicType } from "@/lib/types";
 import { currentUser } from "../mock-topics";
 import { TopicActions } from "./TopicActions";
 
-interface TopicProps extends TopicType {}
+interface TopicProps extends TopicType {
+  source: string;
+}
 
 export function Topic({
   id,
@@ -17,6 +19,7 @@ export function Topic({
   label,
   starred,
   archived,
+  source,
 }: TopicProps) {
   const others = participants.filter(
     (participant) => participant.id !== currentUser.id,
@@ -27,26 +30,18 @@ export function Topic({
     participantsNames.push("me");
   }
 
-  const avatarUser =
-    creator.id === currentUser.id ? (others[0] ?? creator) : creator;
-  const initials = avatarUser.firstName[0] + avatarUser.lastName[0];
-
   const messagesLength = messages.length;
-  const date = getTopicDate(lastMessageAt);
+  const date = getTopicShortDate(lastMessageAt);
 
   return (
     <li className="relative flex h-20 justify-between border-b hover:bg-muted px-4 py-3  font-medium whitespace-nowrap last:border-0 sm:px-5 group">
       <Link
-        href={`/topic/${id}`}
+        href={`/${source}/${id}`}
         aria-label={subject}
         className="absolute inset-0"
       />
       <div className="flex gap-2 items-center">
-        <Avatar size="lg">
-          <AvatarFallback className="bg-primary text-primary-foreground">
-            {initials}
-          </AvatarFallback>
-        </Avatar>
+        <MessageAvatar user={creator} />
         <div>
           <div className="flex gap-1">
             <p>{participantsNames.join(", ")}</p>

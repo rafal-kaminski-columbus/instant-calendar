@@ -8,5 +8,7 @@ export default async function LabelPage({ params }: LabelPageProps) {
 
   const topics = mockTopics.filter((topic) => topic.label?.id === labelId);
 
-  return <TopicList label={labelId} topics={topics} />;
+  return (
+    <TopicList source={`label/${labelId}`} label={labelId} topics={topics} />
+  );
 }

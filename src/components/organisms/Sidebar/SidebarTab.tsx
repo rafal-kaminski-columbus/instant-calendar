@@ -1,4 +1,3 @@
-import { DynamicIcon } from "lucide-react/dynamic";
 import Link from "next/link";
 import type { Tab } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -20,7 +19,7 @@ export function SidebarTab({ tab, isActive }: SidebarTabProps) {
             : "bg-transparent hover:bg-muted-foreground/10",
         )}
       >
-        <DynamicIcon name={tab.iconName} size={20} />
+        <tab.icon />
         <h2 className="icon">{tab.name}</h2>
       </Link>
     </li>
