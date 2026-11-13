@@ -6,12 +6,12 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
-import type { Topic as TopicType } from "@/lib/types";
+import type { TopicMeta } from "@/lib/types";
 import { Topic } from "./Topic";
 
 export interface TopicTableProps {
   label: string;
-  topics: TopicType[];
+  topics: TopicMeta[];
   source: string;
 }
 

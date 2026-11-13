@@ -10,9 +10,7 @@ export function TopicMessageHeader({
   createdAt,
 }: TopicMessageHeaderProps) {
   const creatorName = `${creator.firstName} ${creator.lastName}`;
-  const participantFirstNames = participants.map(
-    (participant) => participant.firstName,
-  );
+
   const fullDate = getTopicFullDate(createdAt);
 
   return (
@@ -27,7 +25,7 @@ export function TopicMessageHeader({
             </span>
           </span>
           <h3 className="text-sm text-muted-foreground">
-            To: {participantFirstNames.join(", ")}
+            To: {participants.join(", ")}
           </h3>
         </div>
       </div>
