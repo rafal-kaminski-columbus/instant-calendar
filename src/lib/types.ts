@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 
 export interface User {
-  id: string;
+  id: number;
   email: string;
   firstName: string;
   lastName: string;
@@ -21,9 +21,9 @@ export interface Label {
 }
 
 export interface TopicMeta {
-  id: string;
+  id: number;
   subject: string;
-  creator: User;
+  lastParticipant: User;
   participants: string[];
   messageCount: number;
   lastMessageAt: string;
@@ -40,7 +40,7 @@ export interface Topic extends TopicMeta {
 export interface MessageMeta {
   id: string;
   creator: User;
-  participants: User[];
+  participants: string[];
   createdAt: string;
 }
 
