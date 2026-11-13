@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { getUserMailboxTopics } from "@/drizzle/schema/query";
 import { TopicList } from "@/features/topic/components/TopicList";
 import { mockTopics } from "@/features/topic/mock-topics";
 import { currentUser } from "@/lib/current-user";
@@ -18,6 +19,7 @@ export default async function MailboxPage({ params }: MailBoxProps) {
 
   switch (mailbox) {
     case "inbox":
+      console.log(await getUserMailboxTopics(1, "inbox"));
       topics = mockTopics.filter((topic) => !topic.archived);
       break;
     case "starred":
