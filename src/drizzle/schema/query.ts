@@ -2,7 +2,13 @@ import { eq } from "drizzle-orm";
 import { db } from "@/drizzle";
 import { messages, type users } from "@/drizzle/schema";
 import type { Mailbox } from "@/lib/mailbox";
-import type { Label, Message, TopicMeta, User } from "@/lib/types";
+import type {
+  Label,
+  Message,
+  TopicMeta,
+  TopicSummary,
+  User,
+} from "@/lib/types";
 
 const userColumns = {
   id: true,
@@ -132,4 +138,40 @@ export async function getMessagesInTopic(topicId: number): Promise<Message[]> {
     subject: message.content,
     createdAt: message.sentAt.toISOString(),
   }));
+}
+
+export async function getTopicSummary(
+  userId: number,
+  topicId: number,
+): Promise<TopicSummary> {
+  const [topic] = await db.query.topics.findMany({
+    where: { id: topicId },
+    columns: { id: true, subject: true },
+    extras: {
+      messageCount: (t) => db.$count(messages, eq(messages.topicId, t.id)),
+    },
+    with: {
+      topicStates: {
+        where: { userId },
+        columns: { seen: true, starred: true, archivized: true },
+        with: {
+          label: { columns: { id: true, name: true, color: true } },
+        },
+      },
+    },
+  });
+
+  const [{ label, seen, starred, archivized }] = topic.topicStates;
+
+  return {
+    id: String(topic.id),
+    subject: topic.subject,
+    label: label
+      ? { id: String(label.id), name: label.name, color: label.color }
+      : null,
+    read: seen,
+    starred,
+    archived: archivized,
+    messageCount: topic.messageCount,
+  };
 }
