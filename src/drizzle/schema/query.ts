@@ -1,8 +1,28 @@
 import { eq } from "drizzle-orm";
 import { db } from "@/drizzle";
-import { messages } from "@/drizzle/schema";
+import { messages, type users } from "@/drizzle/schema";
 import type { Mailbox } from "@/lib/mailbox";
-import type { TopicMeta } from "@/lib/types";
+import type { Label, Message, TopicMeta, User } from "@/lib/types";
+
+const userColumns = {
+  id: true,
+  email: true,
+  firstname: true,
+  lastname: true,
+  createdAt: true,
+} as const;
+
+function toUser(
+  user: Pick<typeof users.$inferSelect, keyof typeof userColumns>,
+): User {
+  return {
+    id: user.id,
+    email: user.email,
+    firstName: user.firstname,
+    lastName: user.lastname,
+    createdAt: user.createdAt.toISOString(),
+  };
+}
 
 type TopicStatesWhere = NonNullable<
   Parameters<typeof db.query.topicStates.findMany>[0]
@@ -50,7 +70,7 @@ async function getUserTopics(where: TopicStatesWhere): Promise<TopicMeta[]> {
             orderBy: { sentAt: "desc" },
             limit: 1,
             with: {
-              user: true,
+              user: { columns: userColumns },
             },
           },
         },
@@ -65,13 +85,7 @@ async function getUserTopics(where: TopicStatesWhere): Promise<TopicMeta[]> {
     return {
       id: topic.id,
       subject: topic.subject,
-      lastParticipant: {
-        id: lastMessage.user.id,
-        email: lastMessage.user.email,
-        firstName: lastMessage.user.firstname,
-        lastName: lastMessage.user.lastname,
-        createdAt: lastMessage.user.createdAt.toISOString(),
-      },
+      lastParticipant: toUser(lastMessage.user),
       participants: topic.participants.map((p) => p.firstname),
       messageCount: topic.messageCount,
       lastMessageAt: lastMessage.sentAt.toISOString(),
@@ -83,4 +97,42 @@ async function getUserTopics(where: TopicStatesWhere): Promise<TopicMeta[]> {
       archived: archivized,
     };
   });
+}
+
+export async function getUserLabels(userId: number): Promise<Label[]> {
+  const labels = await db.query.labels.findMany({
+    where: { userId },
+    columns: { id: true, name: true, color: true },
+  });
+  return labels.map((label) => ({
+    id: String(label.id),
+    name: label.name,
+    color: label.color,
+  }));
+}
+
+export async function getMessagesInTopic(
+  userId: number,
+  topicId: number,
+): Promise<Message[]> {
+  const topicMessages = await db.query.messages.findMany({
+    where: { topicId, topic: { topicStates: { userId } } },
+    columns: { id: true, content: true, sentAt: true },
+    with: {
+      user: { columns: userColumns },
+      users: {
+        columns: { firstname: true },
+        orderBy: { firstname: "asc" },
+      },
+    },
+    orderBy: { sentAt: "desc" },
+  });
+
+  return topicMessages.map((message) => ({
+    id: String(message.id),
+    creator: toUser(message.user),
+    participants: message.users.map((recipient) => recipient.firstname),
+    subject: message.content,
+    createdAt: message.sentAt.toISOString(),
+  }));
 }
