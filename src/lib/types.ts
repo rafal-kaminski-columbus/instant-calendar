@@ -20,17 +20,21 @@ export interface Label {
   color: string;
 }
 
-export interface Topic {
+export interface TopicMeta {
   id: string;
   subject: string;
   creator: User;
-  participants: User[];
-  messages: Message[];
+  participants: string[];
+  messageCount: number;
   lastMessageAt: string;
   label: Label | null;
   read: boolean;
   starred: boolean;
   archived: boolean;
+}
+
+export interface Topic extends TopicMeta {
+  messages: Message[];
 }
 
 export interface MessageMeta {
