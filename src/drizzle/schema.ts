@@ -119,7 +119,7 @@ export const topics = pgTable("topics", {
   id: bigint({ mode: "number" })
     .primaryKey()
     .generatedAlwaysAsIdentity({ maxValue: 9223372036854776000 }),
-  subject: varchar({ length: 255 }),
+  subject: varchar({ length: 255 }).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
