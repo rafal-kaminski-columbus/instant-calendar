@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { currentUser } from "@/features/topic/mock-topics";
+import { currentUser } from "@/lib/current-user";
 import type { User } from "@/lib/types";
 
 interface MessageAvatarProps {

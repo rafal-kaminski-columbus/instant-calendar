@@ -1,12 +1,5 @@
+import { currentUser } from "@/lib/current-user";
 import type { Label, Message, Topic, User } from "@/lib/types";
-
-export const currentUser: User = {
-  id: "user-me",
-  email: "rafal.kaminski@cmail.com",
-  firstName: "Rafał",
-  lastName: "Kamiński",
-  createdAt: "2026-01-04T09:00:00.000Z",
-};
 
 const finn: User = {
   id: "user-finn",

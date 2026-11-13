@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { TopicList } from "@/features/topic/components/TopicList";
-import { currentUser, mockTopics } from "@/features/topic/mock-topics";
+import { mockTopics } from "@/features/topic/mock-topics";
+import { currentUser } from "@/lib/current-user";
 import { isMailbox, MAILBOXES } from "@/lib/mailbox";
 import type { Topic } from "@/lib/types";
 

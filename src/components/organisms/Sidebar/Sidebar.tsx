@@ -1,9 +1,8 @@
 "use client";
-import { PencilLine } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { LabelList } from "@/components/molecules/LabelList";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { TopicComposeDrawer } from "@/features/topic/components/TopicComposeDrawer";
 import { MAILBOX_KEYS, MAILBOXES } from "@/lib/mailbox";
 import type { Tab } from "@/lib/types";
 import { SidebarTab } from "./SidebarTab";
@@ -24,10 +23,7 @@ export function Sidebar() {
   return (
     <aside className="sm:w-60 flex flex-col justify-between h-full sm:p-4 sm:pt-2 p-3 pt-0">
       <article className="flex flex-col gap-8">
-        <Button className="flex gap-2 w-full" size="lg">
-          <PencilLine />
-          Create
-        </Button>
+        <TopicComposeDrawer />
         <nav>
           <ul className="flex flex-col gap-1">
             {tabs.map((tab) => {

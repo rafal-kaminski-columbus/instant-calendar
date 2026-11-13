@@ -36,7 +36,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         nunitoSans.variable,
       )}
     >
-      <body className="flex h-dvh flex-col">
+      <body className="flex h-dvh flex-col relative">
         <Header />
         <main className="flex gap-2 flex-1 min-h-0 bg-background w-full">
           <div className="md:flex hidden">

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { MessageAvatar } from "@/components/molecules/MessageAvatar";
+import { currentUser } from "@/lib/current-user";
 import { getTopicShortDate } from "@/lib/pure";
 import type { Topic as TopicType } from "@/lib/types";
-import { currentUser } from "../mock-topics";
 import { TopicActions } from "./TopicActions";
 
 interface TopicProps extends TopicType {
