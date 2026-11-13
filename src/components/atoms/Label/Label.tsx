@@ -5,10 +5,10 @@ interface LabelProps extends LabelType {
   isActive: boolean;
 }
 
-export function Label({ name, color, isActive }: LabelProps) {
+export function Label({ id, name, color, isActive }: LabelProps) {
   return (
     <Link
-      href={`/label/${name}`}
+      href={`/label/${id}`}
       className="flex gap-2 items-center hover:bg-muted-foreground/10 px-2 py-1 rounded-full"
     >
       <div

@@ -11,7 +11,7 @@ import { Sidebar } from "../Sidebar/Sidebar";
 export function Header() {
   return (
     <header className="flex h-16 items-center gap-2 px-2">
-      <div className="min-w-64 flex-1 hidden md:flex">
+      <div className="min-w-60 flex-1 hidden md:flex">
         <h1>COLUMBUS THE GREAT MAIL</h1>
       </div>
       <div className="flex-1 md:hidden flex items-center">

@@ -44,7 +44,7 @@ export function LabelList() {
       <h2 className="text-muted-foreground">Labels</h2>
       <ul className="flex flex-col gap-2">
         {labels.map((label) => {
-          const isActive = activeLabel === label.name;
+          const isActive = activeLabel === label.id;
           return (
             <li key={label.id}>
               <Label isActive={isActive} {...label} />
