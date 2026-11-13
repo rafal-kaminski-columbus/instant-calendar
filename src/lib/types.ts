@@ -56,5 +56,4 @@ export interface TopicSummary {
   starred: boolean;
   archived: boolean;
   messageCount: number;
-  //latest: MessageMeta;
 }

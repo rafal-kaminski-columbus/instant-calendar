@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { and, eq, not } from "drizzle-orm";
 import { db } from "@/drizzle";
-import { messages, type users } from "@/drizzle/schema";
+import { messages, topicStates, type users } from "@/drizzle/schema";
 import type { Mailbox } from "@/lib/mailbox";
 import type {
   Label,
@@ -50,9 +50,9 @@ export function getUserMailboxTopics(
 
 export function getUserLabelTopics(
   userId: number,
-  labelId: number,
+  name: string,
 ): Promise<TopicMeta[]> {
-  return getUserTopics({ userId, labelId });
+  return getUserTopics({ userId, label: { name: name } });
 }
 
 async function getUserTopics(where: TopicStatesWhere): Promise<TopicMeta[]> {
@@ -174,4 +174,25 @@ export async function getTopicSummary(
     archived: archivized,
     messageCount: topic.messageCount,
   };
+}
+
+const topicStateFlags = {
+  read: "seen",
+  starred: "starred",
+  archived: "archivized",
+} as const;
+
+export async function toggleTopicState(
+  userId: number,
+  topicId: number,
+  flag: keyof typeof topicStateFlags,
+): Promise<void> {
+  const column = topicStateFlags[flag];
+
+  await db
+    .update(topicStates)
+    .set({ [column]: not(topicStates[column]) })
+    .where(
+      and(eq(topicStates.userId, userId), eq(topicStates.topicId, topicId)),
+    );
 }
