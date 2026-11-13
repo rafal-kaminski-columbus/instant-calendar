@@ -26,6 +26,7 @@ export const labels = pgTable(
       foreignColumns: [users.id],
       name: "fk_label_user",
     }).onDelete("cascade"),
+    unique("uk_label_id_user").on(table.id, table.userId),
     unique("uk_user_label_name").on(table.userId, table.name),
   ],
 );
@@ -81,30 +82,6 @@ export const messages = pgTable(
   ],
 );
 
-export const topicLabels = pgTable(
-  "topic_labels",
-  {
-    topicId: bigint("topic_id", { mode: "number" }).notNull(),
-    labelId: integer("label_id").notNull(),
-  },
-  (table) => [
-    primaryKey({
-      columns: [table.topicId, table.labelId],
-      name: "topic_labels_pkey",
-    }),
-    foreignKey({
-      columns: [table.labelId],
-      foreignColumns: [labels.id],
-      name: "fk_tl_label",
-    }).onDelete("cascade"),
-    foreignKey({
-      columns: [table.topicId],
-      foreignColumns: [topics.id],
-      name: "fk_tl_topic",
-    }).onDelete("cascade"),
-  ],
-);
-
 export const topicStates = pgTable(
   "topic_states",
   {
@@ -112,12 +89,19 @@ export const topicStates = pgTable(
     topicId: bigint("topic_id", { mode: "number" }).notNull(),
     seen: boolean().default(false).notNull(),
     archivized: boolean().default(false).notNull(),
+    starred: boolean().default(false).notNull(),
+    labelId: integer("label_id"),
   },
   (table) => [
     primaryKey({
       columns: [table.userId, table.topicId],
       name: "topic_states_pkey",
     }),
+    foreignKey({
+      columns: [table.labelId, table.userId],
+      foreignColumns: [labels.id, labels.userId],
+      name: "fk_state_label",
+    }).onDelete("set null"),
     foreignKey({
       columns: [table.topicId],
       foreignColumns: [topics.id],
