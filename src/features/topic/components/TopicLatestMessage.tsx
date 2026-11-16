@@ -1,3 +1,4 @@
+import { navigation } from "next/cache";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getLatestMessageInTopic } from "../message-queries";
 import { ReplyForm } from "./ReplyForm";
@@ -7,6 +8,7 @@ interface TopicLatestMessageProps {
 }
 
 export async function TopicLatestMessage({ topicId }: TopicLatestMessageProps) {
+  await navigation();
   const message = await getLatestMessageInTopic(Number(topicId));
 
   if (!message) {

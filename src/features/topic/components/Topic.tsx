@@ -39,6 +39,7 @@ export function Topic({
         href={`/${source}/${id}`}
         aria-label={subject}
         className="absolute inset-0"
+        prefetch
       />
       <div className="flex gap-2 items-center">
         <MessageAvatar user={lastParticipant} />

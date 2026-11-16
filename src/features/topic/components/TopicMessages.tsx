@@ -1,3 +1,4 @@
+import { navigation } from "next/cache";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getMessagesInTopic } from "../message-queries";
 import { TopicMessage } from "./TopicMessage";
@@ -8,6 +9,7 @@ interface TopicMessagesProps {
 }
 
 export async function TopicMessages({ topicId }: TopicMessagesProps) {
+  await navigation();
   const messages = await getMessagesInTopic(Number(topicId));
 
   return (
@@ -26,7 +28,7 @@ interface TopicMessagesSkeletonProps {
 }
 
 export function TopicMessagesSkeleton({
-  count = 3,
+  count = 2,
 }: TopicMessagesSkeletonProps) {
   return (
     <section>
