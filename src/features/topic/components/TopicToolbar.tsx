@@ -6,6 +6,7 @@ import { TopicStarButton } from "./TopicStarButton";
 interface TopicToolbarProps {
   topicId: string;
   backHref: string;
+  sourceUrl: string;
   messageCount: number;
   starred: boolean;
   archived: boolean;
@@ -14,6 +15,7 @@ interface TopicToolbarProps {
 export function TopicToolbar({
   topicId,
   backHref,
+  sourceUrl,
   messageCount,
   starred,
   archived,
@@ -23,8 +25,16 @@ export function TopicToolbar({
       <div className="flex gap-0.5">
         <TopicBackButton href={backHref} />
         <Separator orientation="vertical" />
-        <TopicArchiveButton topicId={topicId} archived={archived} />
-        <TopicStarButton topicId={topicId} starred={starred} />
+        <TopicArchiveButton
+          topicId={topicId}
+          archived={archived}
+          sourceUrl={sourceUrl}
+        />
+        <TopicStarButton
+          topicId={topicId}
+          starred={starred}
+          sourceUrl={sourceUrl}
+        />
       </div>
       <p className="text-muted-foreground text-xs">
         {messageCount === 1 ? "1 message" : `${messageCount} messages`}

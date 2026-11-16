@@ -1,5 +1,9 @@
 import { notFound } from "next/navigation";
-import { getMessagesInTopic, getTopicSummary } from "@/drizzle/schema/query";
+import {
+  getMessagesInTopic,
+  getTopicSummary,
+  toggleTopicState,
+} from "@/drizzle/schema/query";
 import { currentUser } from "@/lib/current-user";
 import type { TopicSummary } from "@/lib/types";
 import { ReplyForm } from "./ReplyForm";
@@ -23,13 +27,17 @@ export async function TopicDetail({ topicId, backHref }: TopicDetailProps) {
     notFound();
   }
 
+  if (!topic.read) {
+    await toggleTopicState(currentUser.id, Number(topicId), "read");
+  }
+
   const [latestMessage, ...earlierMessages] = topicMessages;
 
   const summary: TopicSummary = {
     id: String(topic.id),
     subject: topic.subject,
     label: topic.label,
-    read: topic.read,
+    read: true,
     starred: topic.starred,
     archived: topic.archived,
     messageCount: topicMessages.length,
@@ -40,6 +48,7 @@ export async function TopicDetail({ topicId, backHref }: TopicDetailProps) {
       <TopicToolbar
         topicId={summary.id}
         backHref={backHref}
+        sourceUrl={`${backHref}/${topicId}`}
         messageCount={summary.messageCount}
         starred={summary.starred}
         archived={summary.archived}

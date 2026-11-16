@@ -196,11 +196,17 @@ const topicStateFlags = {
   starred: "starred",
   archived: "archivized",
 } as const satisfies Record<string, TopicStateFlagColumn>;
+
+export const topicStateKeys = Object.keys(topicStateFlags) as TopicStateKeys[];
+
+export type TopicStateKeys = keyof typeof topicStateFlags;
+
 export async function toggleTopicState(
   userId: number,
   topicId: number,
   flag: keyof typeof topicStateFlags,
 ): Promise<void> {
+  await delay(TOPICS_DELAY_MS);
   const column = topicStateFlags[flag];
 
   await db

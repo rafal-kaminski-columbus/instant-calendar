@@ -1,8 +1,9 @@
+import { TopicList } from "@/features/topic/components/TopicList";
+
 interface SearchPageProps extends PageProps<"/search"> {}
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const { query } = await searchParams;
 
-  // ? dodac source na 'search'
-  return <h1>No results for {query}</h1>;
+  return <TopicList label="Search" topics={[]} source={"/search"} />;
 }
