@@ -10,7 +10,6 @@ import { toggleTopicState } from "../actions/actions";
 interface TopicArchiveButtonProps {
   topicId: string;
   archived: boolean;
-  sourceUrl: string;
   size?: ButtonSize;
   className?: string;
 }
@@ -18,7 +17,6 @@ interface TopicArchiveButtonProps {
 export function TopicArchiveButton({
   topicId,
   archived,
-  sourceUrl,
   size = "icon-lg",
   className,
 }: TopicArchiveButtonProps) {
@@ -34,7 +32,7 @@ export function TopicArchiveButton({
       disabled={isPending}
       className={cn("text-muted-foreground hover:text-foreground", className)}
       onClick={() =>
-        startTransition(() => toggleTopicState("archived", topicId, sourceUrl))
+        startTransition(() => toggleTopicState("archived", topicId))
       }
     >
       {archived ? <ArchiveRestore /> : <Archive />}

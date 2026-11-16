@@ -71,12 +71,7 @@ export function Topic({
           {date}
         </p>
         <div className="relative z-20 flex">
-          <TopicActions
-            id={String(id)}
-            starred={starred}
-            archived={archived}
-            sourceUrl={`/${source}`}
-          />
+          <TopicActions id={String(id)} starred={starred} archived={archived} />
         </div>
       </div>
     </li>

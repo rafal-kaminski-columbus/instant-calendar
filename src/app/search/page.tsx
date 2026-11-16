@@ -1,4 +1,4 @@
-import { AnimatedSuspense } from "@/components/atoms/AnimatedSuspense";
+import { Suspense } from "react";
 import {
   TopicList,
   TopicListSkeleton,
@@ -12,10 +12,10 @@ export default function SearchPage({ searchParams }: SearchPageProps) {
   }));
 
   return (
-    <AnimatedSuspense fallback={<TopicListSkeleton />}>
+    <Suspense fallback={<TopicListSkeleton />}>
       {query.then(() => (
         <TopicList source="/search" label="Search" />
       ))}
-    </AnimatedSuspense>
+    </Suspense>
   );
 }

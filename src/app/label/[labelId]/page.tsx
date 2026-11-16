@@ -1,4 +1,4 @@
-import { AnimatedSuspense } from "@/components/atoms/AnimatedSuspense";
+import { Suspense } from "react";
 import {
   TopicList,
   TopicListSkeleton,
@@ -13,10 +13,10 @@ export default function LabelPage({ params }: LabelPageProps) {
   }));
 
   return (
-    <AnimatedSuspense fallback={<TopicListSkeleton />}>
+    <Suspense fallback={<TopicListSkeleton />}>
       {query.then(({ labelId, name }) => (
         <TopicList source={`label/${labelId}`} label={name} />
       ))}
-    </AnimatedSuspense>
+    </Suspense>
   );
 }

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { AnimatedSuspense } from "@/components/atoms/AnimatedSuspense";
+import { Suspense } from "react";
 import {
   TopicList,
   TopicListSkeleton,
@@ -17,10 +17,10 @@ export default function MailboxPage({ params }: MailBoxProps) {
   });
 
   return (
-    <AnimatedSuspense fallback={<TopicListSkeleton />}>
+    <Suspense fallback={<TopicListSkeleton />}>
       {query.then(({ mailbox }) => (
         <TopicList source={mailbox} label={MAILBOXES[mailbox].label} />
       ))}
-    </AnimatedSuspense>
+    </Suspense>
   );
 }

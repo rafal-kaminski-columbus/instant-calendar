@@ -10,21 +10,16 @@ import { TopicStarButton } from "./TopicStarButton";
 interface TopicToolbarProps {
   topicId: string;
   backHref: string;
-  sourceUrl: string;
 }
 
-export async function TopicToolbar({
-  topicId,
-  backHref,
-  sourceUrl,
-}: TopicToolbarProps) {
+export async function TopicToolbar({ topicId, backHref }: TopicToolbarProps) {
   const { messageCount, archived, starred, read } = await getTopicSummary(
     currentUser.id,
     Number(topicId),
   );
 
   if (!read) {
-    await toggleTopicState("read", topicId, "/");
+    await toggleTopicState("read", topicId);
   }
 
   return (
@@ -32,16 +27,8 @@ export async function TopicToolbar({
       <div className="flex gap-0.5">
         <TopicBackButton href={backHref} />
         <Separator orientation="vertical" />
-        <TopicArchiveButton
-          topicId={topicId}
-          archived={archived}
-          sourceUrl={sourceUrl}
-        />
-        <TopicStarButton
-          topicId={topicId}
-          starred={starred}
-          sourceUrl={sourceUrl}
-        />
+        <TopicArchiveButton topicId={topicId} archived={archived} />
+        <TopicStarButton topicId={topicId} starred={starred} />
       </div>
       <p className="text-muted-foreground text-xs">
         {messageCount === 1 ? "1 message" : `${messageCount} messages`}

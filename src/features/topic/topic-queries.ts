@@ -1,11 +1,14 @@
+import "server-only";
+
 import { and, eq, not } from "drizzle-orm";
-import { cache } from "react";
+import { cacheLife, cacheTag } from "next/cache";
 import { db } from "@/drizzle";
 import { messages, topicStates, type users } from "@/drizzle/schema";
 import { TOPICS_DELAY_MS } from "@/lib/constants";
 import type { Mailbox } from "@/lib/mailbox";
 import { delay } from "@/lib/pure";
 import type { Label, TopicMeta, TopicSummary, User } from "@/lib/types";
+import { topicTags } from "./topic-cacheTags";
 
 export const userColumns = {
   id: true,
@@ -38,20 +41,39 @@ const mailboxFilters = {
   sent: (userId) => ({ topic: { messages: { senderId: userId } } }),
 } satisfies Record<Mailbox, (userId: number) => TopicStatesWhere>;
 
-function getUserMailboxTopics(
+export async function getUserMailboxTopics(
   userId: number,
   mailbox: Mailbox,
 ): Promise<TopicMeta[]> {
+  return getUserMailboxTopicsCached(userId, mailbox);
+}
+
+async function getUserMailboxTopicsCached(
+  userId: number,
+  mailbox: Mailbox,
+): Promise<TopicMeta[]> {
+  "use cache";
+  cacheLife("max");
+  cacheTag(topicTags.list(String(userId)));
+
   return getUserTopics({ userId, ...mailboxFilters[mailbox](userId) });
 }
 
-const cachedGetUserMailboxTopics = cache(getUserMailboxTopics);
-export { cachedGetUserMailboxTopics as getUserMailboxTopics };
-
-export function getUserLabelTopics(
+export async function getUserLabelTopics(
   userId: number,
   name: string,
 ): Promise<TopicMeta[]> {
+  return getUserLabelTopicsCached(userId, name);
+}
+
+async function getUserLabelTopicsCached(
+  userId: number,
+  name: string,
+): Promise<TopicMeta[]> {
+  "use cache";
+  cacheLife("max");
+  cacheTag(topicTags.list(String(userId)));
+
   return getUserTopics({ userId, label: { name: name } });
 }
 
@@ -108,6 +130,14 @@ async function getUserTopics(where: TopicStatesWhere): Promise<TopicMeta[]> {
 }
 
 export async function getUserLabels(userId: number): Promise<Label[]> {
+  return getUserLabelsCached(userId);
+}
+
+async function getUserLabelsCached(userId: number): Promise<Label[]> {
+  "use cache";
+  cacheLife("max");
+  cacheTag(topicTags.labels(String(userId)));
+
   await delay(TOPICS_DELAY_MS);
 
   const labels = await db.query.labels.findMany({
@@ -121,10 +151,21 @@ export async function getUserLabels(userId: number): Promise<Label[]> {
   }));
 }
 
-async function getTopicSummary(
+export async function getTopicSummary(
   userId: number,
   topicId: number,
 ): Promise<TopicSummary> {
+  return getTopicSummaryCached(userId, topicId);
+}
+
+async function getTopicSummaryCached(
+  userId: number,
+  topicId: number,
+): Promise<TopicSummary> {
+  "use cache";
+  cacheLife("max");
+  cacheTag(topicTags.detail(String(topicId)));
+
   await delay(TOPICS_DELAY_MS);
 
   const [topic] = await db.query.topics.findMany({
@@ -177,9 +218,6 @@ async function getTopicSummary(
     },
   };
 }
-
-const cachedGetTopicSummary = cache(getTopicSummary);
-export { cachedGetTopicSummary as getTopicSummary };
 
 type TopicState = typeof topicStates.$inferSelect;
 

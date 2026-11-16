@@ -10,7 +10,6 @@ import { toggleTopicState } from "../actions/actions";
 interface TopicStarButtonProps {
   topicId: string;
   starred: boolean;
-  sourceUrl: string;
   size?: ButtonSize;
   className?: string;
 }
@@ -18,7 +17,6 @@ interface TopicStarButtonProps {
 export function TopicStarButton({
   topicId,
   starred,
-  sourceUrl,
   size = "icon-lg",
   className,
 }: TopicStarButtonProps) {
@@ -34,7 +32,7 @@ export function TopicStarButton({
       disabled={isPending}
       className={cn("text-muted-foreground hover:text-foreground", className)}
       onClick={() =>
-        startTransition(() => toggleTopicState("starred", topicId, sourceUrl))
+        startTransition(() => toggleTopicState("starred", topicId))
       }
     >
       <Star className={cn(starred && "fill-primary text-primary")} />
