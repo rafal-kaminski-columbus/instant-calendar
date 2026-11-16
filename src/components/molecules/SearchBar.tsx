@@ -58,7 +58,6 @@ export function SearchBar() {
           <InputGroupAddon>
             <Search />
           </InputGroupAddon>
-          <InputGroupAddon align="inline-end">13 results</InputGroupAddon>
         </InputGroup>
       </Form>
     </search>

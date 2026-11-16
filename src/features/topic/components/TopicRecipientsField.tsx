@@ -13,11 +13,9 @@ import {
   useComboboxAnchor,
 } from "@/components/ui/combobox";
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
-import { currentUser } from "@/lib/current-user";
 import type { User } from "@/lib/types";
-import { users } from "../mock-topics";
 
-const recipients = users.filter((user) => user.id !== currentUser.id);
+const recipients = ["Emil", "Kacper"];
 
 const fullName = (user: User) => `${user.firstName} ${user.lastName}`;
 

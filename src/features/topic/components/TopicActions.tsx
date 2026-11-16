@@ -7,20 +7,28 @@ interface TopicActionsProps {
   id: string;
   starred: boolean;
   archived: boolean;
+  sourceUrl: string;
 }
 
-export function TopicActions({ id, starred, archived }: TopicActionsProps) {
+export function TopicActions({
+  id,
+  starred,
+  archived,
+  sourceUrl,
+}: TopicActionsProps) {
   return (
     <>
       <TopicArchiveButton
         topicId={id}
         archived={archived}
+        sourceUrl={sourceUrl}
         size="icon"
         className="invisible transition-none group-hover:visible"
       />
       <TopicStarButton
         topicId={id}
         starred={starred}
+        sourceUrl={sourceUrl}
         size="icon"
         className={cn(
           "transition-none",
