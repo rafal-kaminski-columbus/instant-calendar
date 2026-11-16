@@ -19,6 +19,7 @@ export function TopicStarButton({
   topicId,
   starred,
   size = "icon-lg",
+  revealOnHover = false,
   className,
 }: TopicStarButtonProps) {
   const [_, startTransition] = useTransition();
@@ -33,7 +34,7 @@ export function TopicStarButton({
       size={size}
       className={cn(
         "text-muted-foreground hover:text-foreground",
-        !optimisticStarred && "invisible group-hover:visible",
+        revealOnHover && !optimisticStarred && "invisible group-hover:visible",
         className,
       )}
       onClick={() =>

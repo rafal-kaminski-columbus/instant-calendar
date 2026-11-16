@@ -21,6 +21,7 @@ export function TopicActions({ id, starred, archived }: TopicActionsProps) {
         topicId={id}
         starred={starred}
         size="icon"
+        revealOnHover
         className="transition-none"
       />
     </>
