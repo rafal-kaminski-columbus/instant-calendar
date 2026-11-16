@@ -17,9 +17,12 @@
     "doctor": "npx react-doctor@latest"
   },
   "dependencies": {
+    "@aws-sdk/client-rds-data": "^3.1164.0",
     "@base-ui/react": "^1.9.0",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.5.2",
+    "dotenv": "^18.0.10",
+    "drizzle-orm": "1.0.0-rc.5",
     "lucide-react": "^1.70.0",
     "next": "16.4.5",
     "react": "19.3.0",
@@ -36,6 +39,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "drizzle-kit": "1.0.0-rc.5",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
     "tailwindcss": "^4",
