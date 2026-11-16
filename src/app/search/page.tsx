@@ -1,9 +1,21 @@
-import { TopicList } from "@/features/topic/components/TopicList";
+import { AnimatedSuspense } from "@/components/atoms/AnimatedSuspense";
+import {
+  TopicList,
+  TopicListSkeleton,
+} from "@/features/topic/components/TopicList";
 
 interface SearchPageProps extends PageProps<"/search"> {}
 
-export default async function SearchPage({ searchParams }: SearchPageProps) {
-  const { query } = await searchParams;
+export default function SearchPage({ searchParams }: SearchPageProps) {
+  const query = searchParams.then(({ query }) => ({
+    query: typeof query === "string" ? query : "",
+  }));
 
-  return <TopicList label="Search" topics={[]} source={"/search"} />;
+  return (
+    <AnimatedSuspense fallback={<TopicListSkeleton />}>
+      {query.then(() => (
+        <TopicList source="/search" label="Search" />
+      ))}
+    </AnimatedSuspense>
+  );
 }

@@ -1,13 +1,20 @@
-import type { MessageMeta, TopicSummary } from "@/lib/types";
-import { TopicMessageHeader } from "./TopicMessageHeader";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getTopicSummary } from "@/features/topic/topic-queries";
+import { currentUser } from "@/lib/current-user";
+import {
+  TopicMessageHeader,
+  TopicMessageHeaderSkeleton,
+} from "./TopicMessageHeader";
 
 interface TopicHeaderProps {
-  summary: TopicSummary;
-  latest: MessageMeta;
+  topicId: string;
 }
 
-export function TopicHeader({ summary, latest }: TopicHeaderProps) {
-  const { subject, label } = summary;
+export async function TopicHeader({ topicId }: TopicHeaderProps) {
+  const { subject, label, latest } = await getTopicSummary(
+    currentUser.id,
+    Number(topicId),
+  );
 
   return (
     <header className="flex flex-col gap-6">
@@ -24,6 +31,17 @@ export function TopicHeader({ summary, latest }: TopicHeaderProps) {
         )}
       </div>
       <TopicMessageHeader {...latest} />
+    </header>
+  );
+}
+
+export function TopicHeaderSkeleton() {
+  return (
+    <header className="flex flex-col gap-6">
+      <div className="flex gap-2">
+        <Skeleton className="h-8 w-2/3 rounded-sm" />
+      </div>
+      <TopicMessageHeaderSkeleton />
     </header>
   );
 }

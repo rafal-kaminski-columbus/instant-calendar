@@ -1,8 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import type { TopicStateKeys } from "@/drizzle/schema/query";
-import { toggleTopicState as toggleState } from "@/drizzle/schema/query";
+import type { TopicStateKeys } from "@/features/topic/topic-queries";
+import { toggleTopicState as toggleState } from "@/features/topic/topic-queries";
 import { currentUser } from "@/lib/current-user";
 
 export async function toggleTopicState(

@@ -1,29 +1,26 @@
 import { notFound } from "next/navigation";
-import { getUserMailboxTopics } from "@/drizzle/schema/query";
-import { TopicList } from "@/features/topic/components/TopicList";
-import { currentUser } from "@/lib/current-user";
+import { AnimatedSuspense } from "@/components/atoms/AnimatedSuspense";
+import {
+  TopicList,
+  TopicListSkeleton,
+} from "@/features/topic/components/TopicList";
 import { isMailbox, MAILBOXES } from "@/lib/mailbox";
-import type { TopicMeta } from "@/lib/types";
 
 interface MailBoxProps extends PageProps<"/[mailbox]"> {}
 
-export default async function MailboxPage({ params }: MailBoxProps) {
-  const { mailbox } = await params;
-
-  if (!isMailbox(mailbox)) {
-    notFound();
-  }
-
-  const topics: TopicMeta[] = await getUserMailboxTopics(
-    currentUser.id,
-    mailbox,
-  );
+export default function MailboxPage({ params }: MailBoxProps) {
+  const query = params.then(({ mailbox }) => {
+    if (!isMailbox(mailbox)) {
+      notFound();
+    }
+    return { mailbox };
+  });
 
   return (
-    <TopicList
-      source={mailbox}
-      label={MAILBOXES[mailbox].label}
-      topics={topics}
-    />
+    <AnimatedSuspense fallback={<TopicListSkeleton />}>
+      {query.then(({ mailbox }) => (
+        <TopicList source={mailbox} label={MAILBOXES[mailbox].label} />
+      ))}
+    </AnimatedSuspense>
   );
 }

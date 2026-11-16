@@ -13,6 +13,8 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  partialPrefetching: true,
+  cacheComponents: true,
 };
 
 export default nextConfig;

@@ -1,18 +1,13 @@
 import { and, eq, not } from "drizzle-orm";
+import { cache } from "react";
 import { db } from "@/drizzle";
 import { messages, topicStates, type users } from "@/drizzle/schema";
 import { TOPICS_DELAY_MS } from "@/lib/constants";
 import type { Mailbox } from "@/lib/mailbox";
 import { delay } from "@/lib/pure";
-import type {
-  Label,
-  Message,
-  TopicMeta,
-  TopicSummary,
-  User,
-} from "@/lib/types";
+import type { Label, TopicMeta, TopicSummary, User } from "@/lib/types";
 
-const userColumns = {
+export const userColumns = {
   id: true,
   email: true,
   firstname: true,
@@ -20,7 +15,7 @@ const userColumns = {
   createdAt: true,
 } as const;
 
-function toUser(
+export function toUser(
   user: Pick<typeof users.$inferSelect, keyof typeof userColumns>,
 ): User {
   return {
@@ -43,12 +38,15 @@ const mailboxFilters = {
   sent: (userId) => ({ topic: { messages: { senderId: userId } } }),
 } satisfies Record<Mailbox, (userId: number) => TopicStatesWhere>;
 
-export function getUserMailboxTopics(
+function getUserMailboxTopics(
   userId: number,
   mailbox: Mailbox,
 ): Promise<TopicMeta[]> {
   return getUserTopics({ userId, ...mailboxFilters[mailbox](userId) });
 }
+
+const cachedGetUserMailboxTopics = cache(getUserMailboxTopics);
+export { cachedGetUserMailboxTopics as getUserMailboxTopics };
 
 export function getUserLabelTopics(
   userId: number,
@@ -123,31 +121,7 @@ export async function getUserLabels(userId: number): Promise<Label[]> {
   }));
 }
 
-export async function getMessagesInTopic(topicId: number): Promise<Message[]> {
-  await delay(TOPICS_DELAY_MS);
-  const topicMessages = await db.query.messages.findMany({
-    where: { topicId },
-    columns: { id: true, content: true, sentAt: true },
-    with: {
-      user: { columns: userColumns },
-      users: {
-        columns: { firstname: true },
-        orderBy: { firstname: "asc" },
-      },
-    },
-    orderBy: { sentAt: "desc" },
-  });
-
-  return topicMessages.map((message) => ({
-    id: String(message.id),
-    creator: toUser(message.user),
-    participants: message.users.map((recipient) => recipient.firstname),
-    subject: message.content,
-    createdAt: message.sentAt.toISOString(),
-  }));
-}
-
-export async function getTopicSummary(
+async function getTopicSummary(
   userId: number,
   topicId: number,
 ): Promise<TopicSummary> {
@@ -167,10 +141,23 @@ export async function getTopicSummary(
           label: { columns: { id: true, name: true, color: true } },
         },
       },
+      messages: {
+        columns: { id: true, sentAt: true },
+        orderBy: { sentAt: "desc" },
+        limit: 1,
+        with: {
+          user: { columns: userColumns },
+          users: {
+            columns: { firstname: true },
+            orderBy: { firstname: "asc" },
+          },
+        },
+      },
     },
   });
 
   const [{ label, seen, starred, archivized }] = topic.topicStates;
+  const [latestMessage] = topic.messages;
 
   return {
     id: String(topic.id),
@@ -182,8 +169,17 @@ export async function getTopicSummary(
     starred,
     archived: archivized,
     messageCount: topic.messageCount,
+    latest: {
+      id: String(latestMessage.id),
+      creator: toUser(latestMessage.user),
+      participants: latestMessage.users.map((recipient) => recipient.firstname),
+      createdAt: latestMessage.sentAt.toISOString(),
+    },
   };
 }
+
+const cachedGetTopicSummary = cache(getTopicSummary);
+export { cachedGetTopicSummary as getTopicSummary };
 
 type TopicState = typeof topicStates.$inferSelect;
 
