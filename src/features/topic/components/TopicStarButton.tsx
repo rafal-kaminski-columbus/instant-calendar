@@ -2,7 +2,7 @@
 
 import { cn } from "cn";
 import { Star } from "lucide-react";
-import { useTransition } from "react";
+import { useOptimistic, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import type { ButtonSize } from "@/components/ui/button-variants";
 import { toggleTopicState } from "../actions/actions";
@@ -11,6 +11,7 @@ interface TopicStarButtonProps {
   topicId: string;
   starred: boolean;
   size?: ButtonSize;
+  revealOnHover?: boolean;
   className?: string;
 }
 
@@ -20,22 +21,29 @@ export function TopicStarButton({
   size = "icon-lg",
   className,
 }: TopicStarButtonProps) {
-  const [isPending, startTransition] = useTransition();
+  const [_, startTransition] = useTransition();
+  const [optimisticStarred, setOptimisticStarred] = useOptimistic(starred);
 
   return (
     <Button
       type="button"
       data-topic-id={topicId}
-      aria-label={starred ? "Deselect Star from mail" : "Star mail"}
+      aria-label={optimisticStarred ? "Deselect Star from mail" : "Star mail"}
       variant="ghost"
       size={size}
-      disabled={isPending}
-      className={cn("text-muted-foreground hover:text-foreground", className)}
+      className={cn(
+        "text-muted-foreground hover:text-foreground",
+        !optimisticStarred && "invisible group-hover:visible",
+        className,
+      )}
       onClick={() =>
-        startTransition(() => toggleTopicState("starred", topicId))
+        startTransition(async () => {
+          setOptimisticStarred((prev) => !prev);
+          await toggleTopicState("starred", topicId);
+        })
       }
     >
-      <Star className={cn(starred && "fill-primary text-primary")} />
+      <Star className={cn(optimisticStarred && "fill-primary text-primary")} />
     </Button>
   );
 }

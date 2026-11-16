@@ -240,7 +240,7 @@ export async function toggleTopicState(
   topicId: number,
   flag: keyof typeof topicStateFlags,
 ): Promise<void> {
-  await delay(TOPICS_DELAY_MS);
+  await delay(500);
   const column = topicStateFlags[flag];
 
   await db

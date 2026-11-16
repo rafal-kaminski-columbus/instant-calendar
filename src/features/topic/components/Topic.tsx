@@ -66,7 +66,7 @@ export function Topic({
         <p
           className={cn(
             "text-muted-foreground self-end",
-            !read && "font-bold text-black",
+            !read && "font-bold text-foreground",
           )}
         >
           {date}

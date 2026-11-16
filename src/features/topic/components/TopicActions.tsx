@@ -1,5 +1,4 @@
 "use client";
-import { cn } from "cn";
 import { TopicArchiveButton } from "@/features/topic/components/TopicArchiveButton";
 import { TopicStarButton } from "@/features/topic/components/TopicStarButton";
 
@@ -22,10 +21,7 @@ export function TopicActions({ id, starred, archived }: TopicActionsProps) {
         topicId={id}
         starred={starred}
         size="icon"
-        className={cn(
-          "transition-none",
-          !starred && "invisible group-hover:visible",
-        )}
+        className="transition-none"
       />
     </>
   );
