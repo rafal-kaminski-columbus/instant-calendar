@@ -6,9 +6,15 @@ interface LabelPageProps extends PageProps<"/label/[labelId]"> {}
 
 export default async function LabelPage({ params }: LabelPageProps) {
   const { labelId } = await params;
-  const topics = await getUserLabelTopics(currentUser.id, Number(labelId));
+  const capitalizeLabelName =
+    labelId.charAt(0).toUpperCase() + labelId.slice(1);
+  const topics = await getUserLabelTopics(currentUser.id, capitalizeLabelName);
 
   return (
-    <TopicList source={`label/${labelId}`} label={labelId} topics={topics} />
+    <TopicList
+      source={`label/${labelId}`}
+      label={capitalizeLabelName}
+      topics={topics}
+    />
   );
 }

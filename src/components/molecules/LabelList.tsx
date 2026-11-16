@@ -9,7 +9,7 @@ interface LabelListProps {
 
 export function LabelList({ labels }: LabelListProps) {
   const pathName = usePathname();
-  const activeLabel = pathName.split("/")[2];
+  const activeHref = pathName.split("/");
 
   if (labels.length === 0) {
     return <h2>No labels Currently.</h2>;
@@ -20,7 +20,9 @@ export function LabelList({ labels }: LabelListProps) {
       <h2 className="text-muted-foreground">Labels</h2>
       <ul className="flex flex-col gap-2">
         {labels.map((label) => {
-          const isActive = activeLabel === label.id;
+          const isActive =
+            activeHref[2] === label.name.toLowerCase() &&
+            activeHref[1] === "label";
           return (
             <li key={label.id}>
               <Label isActive={isActive} {...label} />

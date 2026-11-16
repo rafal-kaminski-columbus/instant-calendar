@@ -1,3 +1,7 @@
+export function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export function getTopicShortDate(timestamp: string) {
   const date = new Date(timestamp);
 

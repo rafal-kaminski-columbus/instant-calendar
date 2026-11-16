@@ -1,7 +1,9 @@
 import { and, eq, not } from "drizzle-orm";
 import { db } from "@/drizzle";
 import { messages, topicStates, type users } from "@/drizzle/schema";
+import { TOPICS_DELAY_MS } from "@/lib/constants";
 import type { Mailbox } from "@/lib/mailbox";
+import { delay } from "@/lib/pure";
 import type {
   Label,
   Message,
@@ -56,6 +58,8 @@ export function getUserLabelTopics(
 }
 
 async function getUserTopics(where: TopicStatesWhere): Promise<TopicMeta[]> {
+  await delay(TOPICS_DELAY_MS);
+
   const states = await db.query.topicStates.findMany({
     where,
     columns: { archivized: true, starred: true, seen: true },
@@ -106,6 +110,8 @@ async function getUserTopics(where: TopicStatesWhere): Promise<TopicMeta[]> {
 }
 
 export async function getUserLabels(userId: number): Promise<Label[]> {
+  await delay(TOPICS_DELAY_MS);
+
   const labels = await db.query.labels.findMany({
     where: { userId },
     columns: { id: true, name: true, color: true },
@@ -118,6 +124,7 @@ export async function getUserLabels(userId: number): Promise<Label[]> {
 }
 
 export async function getMessagesInTopic(topicId: number): Promise<Message[]> {
+  await delay(TOPICS_DELAY_MS);
   const topicMessages = await db.query.messages.findMany({
     where: { topicId },
     columns: { id: true, content: true, sentAt: true },
@@ -144,6 +151,8 @@ export async function getTopicSummary(
   userId: number,
   topicId: number,
 ): Promise<TopicSummary> {
+  await delay(TOPICS_DELAY_MS);
+
   const [topic] = await db.query.topics.findMany({
     where: { id: topicId },
     columns: { id: true, subject: true },
