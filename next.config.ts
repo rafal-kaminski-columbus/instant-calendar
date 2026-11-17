@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
   },
   partialPrefetching: true,
   cacheComponents: true,
+  async redirects() {
+    return [{ source: "/", destination: "/inbox", permanent: false }];
+  },
 };
 
 export default nextConfig;

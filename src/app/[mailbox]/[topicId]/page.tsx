@@ -5,9 +5,7 @@ import { isMailbox } from "@/lib/mailbox";
 
 interface TopicDetailPageProps extends PageProps<"/[mailbox]/[topicId]"> {}
 
-export default async function TopicDetailPage({
-  params,
-}: TopicDetailPageProps) {
+export default function TopicDetailPage({ params }: TopicDetailPageProps) {
   const query = params.then(({ mailbox, topicId }) => {
     if (!isMailbox(mailbox)) {
       notFound();
