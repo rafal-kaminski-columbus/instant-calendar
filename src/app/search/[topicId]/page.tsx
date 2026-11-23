@@ -1,17 +1,30 @@
+import { Suspense } from "react";
 import { TopicDetail } from "@/features/topic/components/TopicDetail";
 
 interface TopicDetailPageProps extends PageProps<"/search/[topicId]"> {}
 
-export default async function TopicDetailPage({
+export default function TopicDetailPage({
   params,
   searchParams,
 }: TopicDetailPageProps) {
-  const [{ topicId }, { query }] = await Promise.all([params, searchParams]);
+  const query = Promise.all([params, searchParams]).then(
+    ([{ topicId }, { query }]) => {
+      const search = typeof query === "string" ? query.trim() : "";
 
-  const search = typeof query === "string" ? query.trim() : "";
-  const backHref = search
-    ? `/search?query=${encodeURIComponent(search)}`
-    : "/search";
+      return {
+        topicId,
+        backHref: search
+          ? `/search?query=${encodeURIComponent(search)}`
+          : "/search",
+      };
+    },
+  );
 
-  return <TopicDetail topicId={topicId} backHref={backHref} />;
+  return (
+    <Suspense>
+      {query.then(({ topicId, backHref }) => (
+        <TopicDetail topicId={topicId} backHref={backHref} />
+      ))}
+    </Suspense>
+  );
 }

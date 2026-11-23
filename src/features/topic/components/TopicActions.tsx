@@ -1,5 +1,4 @@
 "use client";
-import { cn } from "cn";
 import { TopicArchiveButton } from "@/features/topic/components/TopicArchiveButton";
 import { TopicStarButton } from "@/features/topic/components/TopicStarButton";
 
@@ -7,33 +6,23 @@ interface TopicActionsProps {
   id: string;
   starred: boolean;
   archived: boolean;
-  sourceUrl: string;
 }
 
-export function TopicActions({
-  id,
-  starred,
-  archived,
-  sourceUrl,
-}: TopicActionsProps) {
+export function TopicActions({ id, starred, archived }: TopicActionsProps) {
   return (
     <>
       <TopicArchiveButton
         topicId={id}
         archived={archived}
-        sourceUrl={sourceUrl}
         size="icon"
         className="invisible transition-none group-hover:visible"
       />
       <TopicStarButton
         topicId={id}
         starred={starred}
-        sourceUrl={sourceUrl}
         size="icon"
-        className={cn(
-          "transition-none",
-          !starred && "invisible group-hover:visible",
-        )}
+        revealOnHover
+        className="transition-none"
       />
     </>
   );

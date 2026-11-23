@@ -39,6 +39,7 @@ export function Topic({
         href={`/${source}/${id}`}
         aria-label={subject}
         className="absolute inset-0"
+        prefetch
       />
       <div className="flex gap-2 items-center">
         <MessageAvatar user={lastParticipant} />
@@ -65,18 +66,13 @@ export function Topic({
         <p
           className={cn(
             "text-muted-foreground self-end",
-            !read && "font-bold text-black",
+            !read && "font-bold text-foreground",
           )}
         >
           {date}
         </p>
         <div className="relative z-20 flex">
-          <TopicActions
-            id={String(id)}
-            starred={starred}
-            archived={archived}
-            sourceUrl={`/${source}`}
-          />
+          <TopicActions id={String(id)} starred={starred} archived={archived} />
         </div>
       </div>
     </li>

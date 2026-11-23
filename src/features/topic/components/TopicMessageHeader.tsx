@@ -1,4 +1,5 @@
 import { MessageAvatar } from "@/components/molecules/MessageAvatar";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getTopicFullDate } from "@/lib/pure";
 import type { MessageMeta } from "@/lib/types";
 
@@ -30,6 +31,21 @@ export function TopicMessageHeader({
         </div>
       </div>
       <p className="text-sm text-muted-foreground">{fullDate}</p>
+    </div>
+  );
+}
+
+export function TopicMessageHeaderSkeleton() {
+  return (
+    <div className="flex justify-between">
+      <div className="flex gap-2">
+        <Skeleton className="size-10 shrink-0 rounded-full" />
+        <div className="flex flex-col gap-2">
+          <Skeleton className="h-4 w-40 rounded-sm" />
+          <Skeleton className="h-3 w-56 rounded-sm" />
+        </div>
+      </div>
+      <Skeleton className="h-3 w-28 rounded-sm" />
     </div>
   );
 }
